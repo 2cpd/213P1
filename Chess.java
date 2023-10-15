@@ -71,15 +71,29 @@ public class Chess {
 					
 					break;
 			}
-			//System.out.println("showsomething");
-			//System.out.println(move.charAt(3) + ""+ move.charAt(4));
-			//System.out.println(pieceMove.get(i).pieceFile.toString().charAt(0));
+			//if correct color piece is moved: proceed; else ILLEGAL_MOVE
+			//if move is not out of bounds: proceed; else ILLEGAL_MOVE
+			Piece currPiece = new Piece(tempPiece,move);//generates new piece
+			//if isCheck == true: if new move makes still isCheck, ILLEGAL_MOVE; else proceed
+			//enPassant check
+				//if currPiece is a pawn && isEnPassant is true: check if lastPiece is an enemy pawn at correct tile on the board
+				//if yes: valid move; else ILLEGAL_MOVE
+			//if move is valid: update currPiece rank/file in arraylist
+			Piece lastPiece = currPiece;//record last move (for en passant/castling check)
+			//castling check
+				//if lastPiece is king:
+					//if king is in castling position: update file of corresponding rook as well
+			//promotion check
+				//if pawn is in top/bottom row: check String move to see if promotion type is specified
+				//if so update pieceType of corresponding pawn
+			//isCheck check
+				//if isCheck: isMate check
+					//if isMate, game ends; any proceeding move should not be registered
+					//if not, print CHECK and proceed
+			//next turn: switch black/white
 		}
 		
 		temp.piecesOnBoard = pieceMove;
-		
-		
-		/* FOLLOWING LINE IS A PLACEHOLDER TO MAKE COMPILER HAPPY */
 		/* WHEN YOU FILL IN THIS METHOD, YOU NEED TO RETURN A ReturnPlay OBJECT */
 		return temp;
 	}
@@ -122,7 +136,6 @@ public class Chess {
 		
 		return temp;
 	}
-	
 	
 	/**
 	 * This method should reset the game, and start from scratch.
