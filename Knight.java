@@ -12,16 +12,14 @@ public class Knight extends Piece {
 		}
 		
 		if (!this.isBlocked()) {
-			if (tarFile >= 0 && tarRank >= 0 && tarFile <= 8 && tarRank <= 8) {
-				if (tarRank == currRank + 1 || tarRank == currRank - 1) {
-					if (tarFile == currFile + 2 || tarFile == currFile - 2) {
-						return true;
-					}
+			if (tarRank == currRank + 1 || tarRank == currRank - 1) {
+				if (tarFile == currFile + 2 || tarFile == currFile - 2) {
+					return true;
+			}
 				}
-				if (tarRank == currRank + 2 || tarRank == currRank - 2) {
-					if (tarFile == currFile + 1 || tarFile == currFile - 1) {
-						return true;
-					}
+			if (tarRank == currRank + 2 || tarRank == currRank - 2) {
+				if (tarFile == currFile + 1 || tarFile == currFile - 1) {
+					return true;
 				}
 			}
 		}
