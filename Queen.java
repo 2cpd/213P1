@@ -16,20 +16,23 @@ public class Queen extends Piece{
 			return false;
 		}
 		
-		if (!this.isBlocked()) {
-			int fileDiff = tarFile - currFile;
-			int rankDiff = tarRank - currRank;
+		int fileDiff = tarFile - currFile;
+		int rankDiff = tarRank - currRank;
+		
+		if (!this.isBlockedRook()) {
 			//Rook Check (N W S E)
 			if (tarFile == currFile ^ tarRank == currRank) { //same file XOR same rank
 				return true;
 			}
+		}
+		else if (!this.isBlockedBishop()) {
 			//Bishop Check (NE NW SW SE)
-			else if (Math.abs(rankDiff) == Math.abs(fileDiff) && Math.abs(fileDiff) != 0) { //x=y, i.e. diagonal
+			if (Math.abs(rankDiff) == Math.abs(fileDiff) && Math.abs(fileDiff) != 0) { //x=y, i.e. diagonal
 				return true;
 			}
 		}
 		return false;
-		
+	}
 		/*
 		//*************************** Bishop
 		int quadrant = 0;
@@ -58,14 +61,13 @@ public class Queen extends Piece{
 		} else {
 			return false;
 		}*/
-	}
 	
-	public boolean isBlocked() {
+	public boolean isBlockedBishop() {
 		int fileDiff = tarFile - currFile; //xDiff
 		int rankDiff = tarRank - currRank; //yDiff
 		for (int i = 0; i < piecesList.size(); i++) {
 			ReturnPiece checkingPiece = piecesList.get(i);
-			int checkingFile = checkingPiece.toString().charAt(0) - '`';
+			int checkingFile = checkingPiece.toString().charAt(0) - '`'; //numerical value of current file/rank checked
 			int checkingRank = checkingPiece.toString().charAt(1) - '0';
 			int checkingFileDiff = checkingFile - currFile;
 			int checkingRankDiff = checkingRank - currRank;
@@ -73,29 +75,8 @@ public class Queen extends Piece{
 			if (checkingPiece.toString().charAt(3) == 'W') checkingIsWhite = 1;
 			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
 			
-			//Rook Block Check
-			if (checkingIsWhite == isWhite && Math.abs(checkingRankDiff) != Math.abs(checkingFileDiff)) {
-				//^same color BUT xDiff != yDiff
-				if (checkingRank == currRank && checkingFile != currFile) { //horiz
-					if (tarRank > currRank && checkingFile < tarFile) { //block right
-						return true;
-					}
-					else if (tarRank < currRank && checkingFile > tarFile) { //left
-						return true;
-					}
-				}
-				else if (checkingFile == currFile && checkingRank != currRank) { //vert
-					if (tarRank > currRank && checkingRank < tarRank) { //up
-						return true;
-					}
-					else if (tarRank < currRank && checkingRank > tarRank) { //down
-						return true;
-					}
-				}
-			}
-			//Bishop Block Check
-			else if (checkingIsWhite == isWhite && Math.abs(checkingRankDiff) == Math.abs(checkingFileDiff)) {
-				if (Math.abs(rankDiff) == Math.abs(fileDiff) && Math.abs(fileDiff) != 0) {
+			if (checkingIsWhite == isWhite && Math.abs(checkingRankDiff) == Math.abs(checkingFileDiff)) {
+				if (Math.abs(rankDiff) == Math.abs(fileDiff) && checkingFile != currFile && checkingRank != currRank) {
 					if (fileDiff > 0 && rankDiff > 0 && checkingFileDiff > 0 && checkingRankDiff > 0) { //Q1, for both tar-curr and checking-curr
 						if (checkingFileDiff < fileDiff && checkingRankDiff < rankDiff)
 							return true;
@@ -114,6 +95,40 @@ public class Queen extends Piece{
 					}
 				}
 				
+			}
+		}
+		return false;
+	}
+	
+	public boolean isBlockedRook() {
+		int fileDiff = tarFile - currFile; //xDiff
+		int rankDiff = tarRank - currRank; //yDiff
+		for (int i = 0; i < piecesList.size(); i++) {
+			ReturnPiece checkingPiece = piecesList.get(i);
+			int checkingFile = checkingPiece.toString().charAt(0) - '`'; //numerical value of current file/rank checked
+			int checkingRank = checkingPiece.toString().charAt(1) - '0';
+			int checkingIsWhite;
+			if (checkingPiece.toString().charAt(3) == 'W') checkingIsWhite = 1;
+			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
+			
+			if (checkingIsWhite == isWhite) {
+				//^same color BUT xDiff != yDiff
+				if (checkingRank == currRank && checkingFile != currFile) { //horiz
+					if (tarFile > currFile && checkingFile > currFile && checkingFile < tarFile) { //block right
+						return true;
+					}
+					else if (tarFile < currFile && checkingFile < currFile && checkingFile > tarFile) { //left
+						return true;
+					}
+				}
+				else if (checkingFile == currFile && checkingRank != currRank) { //vert
+					if (tarRank > currRank && checkingRank > currRank && checkingRank < tarRank) { //up
+						return true;
+					}
+					else if (tarRank < currRank && checkingRank < currRank && checkingRank > tarRank) { //down
+						return true;
+					}
+				}
 			}
 		}
 		return false;

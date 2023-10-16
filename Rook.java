@@ -24,7 +24,7 @@ public class Rook extends Piece{
 		//do four probes in the 4 directions
 		for (int i = 0; i < piecesList.size(); i++) {
 			ReturnPiece checkingPiece = piecesList.get(i);
-			int checkingFile = checkingPiece.toString().charAt(0) - '`';
+			int checkingFile = checkingPiece.toString().charAt(0) - '`'; //numerical value of current file/rank checked
 			int checkingRank = checkingPiece.toString().charAt(1) - '0';
 			int checkingIsWhite;
 			if (checkingPiece.toString().charAt(3) == 'W') checkingIsWhite = 1;
