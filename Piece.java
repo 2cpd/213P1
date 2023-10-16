@@ -35,7 +35,7 @@ public class Piece extends Chess {
 	}
 	
 	public boolean isBlocked() { //default blocked check
-		if (tarPiece != null && currColor == currPiece.toString().charAt(3)) {
+		if (tarPiece != null && tarPiece.toString().charAt(3) == currColor) {
 			return true;
 		}
 		return false;
