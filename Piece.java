@@ -10,11 +10,10 @@ public class Piece extends Chess {
 	
 	public Piece(ReturnPiece currPiece, String move, ArrayList<ReturnPiece> list) {
 		this.currPiece = currPiece; this.move = move; this.piecesList = list;
-		currColor = currPiece.pieceType.toString().charAt(0);
-		
 		currFile = move.charAt(0) - '`'; tarFile = move.charAt(3) - '`';
 		currRank = move.charAt(1) - '0'; tarRank = move.charAt(4) - '0';
 		
+		currColor = currPiece.pieceType.toString().charAt(0);
 		if (currPiece.pieceType.toString().charAt(0) == 'W') isWhite = 1;
 		else isWhite = 0;
 		
