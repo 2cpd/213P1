@@ -79,6 +79,8 @@ public class Chess {
 				//if currPiece is a pawn && isEnPassant is true: check if lastPiece is an enemy pawn at correct tile on the board
 				//if yes: valid move; else ILLEGAL_MOVE
 			//if move is valid: update currPiece rank/file in arraylist
+			//draw check
+				//if "draw" at the end of input: print DRAW and end game
 			Piece lastPiece = currPiece;//record last move (for en passant/castling check)
 			//castling check
 				//if lastPiece is king:
