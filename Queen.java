@@ -71,7 +71,7 @@ public class Queen extends Piece{
 			int checkingRank = checkingPiece.toString().charAt(1) - '0';
 			int checkingFileDiff = checkingFile - currFile;
 			int checkingRankDiff = checkingRank - currRank;
-			int checkingIsWhite;
+			int checkingIsWhite = 0;
 			if (checkingPiece.toString().charAt(3) == 'W') checkingIsWhite = 1;
 			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
 			

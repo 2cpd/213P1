@@ -1,9 +1,11 @@
 package chess;
 
+import java.util.ArrayList;
+
 public class Knight extends Piece {
 	
-	public Knight(ReturnPiece currPiece, String move) {
-		super(currPiece,move); 
+	public Knight(ReturnPiece currPiece, String move, ArrayList<ReturnPiece> list) {
+		super(currPiece,move,list);
 	}
 	
 	public boolean isValidMove() {
