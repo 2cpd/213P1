@@ -5,11 +5,10 @@ import java.util.ArrayList;
 
 public class King extends Piece{
 	boolean isCastle = false;
-	boolean[] directionOfCheck = {false,false,false,false,false,false,false,false};
-	boolean[] canCaptureCheck = {false,false,false,false,false,false,false,false};
-	boolean checkedByKnight;
-		//determine which direction the King is being checked
-		//0246: N E S W; 1357: NE SE SW NW
+	boolean[] directionOfCheck = {false,false,false,false,false,false,false,false}; //direction of checking piece
+	boolean[] canCaptureCheck = {false,false,false,false,false,false,false,false}; //checking piece within movement range of king
+	boolean checkedByKnight; //a knight is checking king
+	//for boolean[i]: i = 0,2,4,6: N,E,S,W; 1,3,5,7: NE,SE,SW,NW
 	
 	public King(ReturnPiece currPiece, String move, ArrayList<ReturnPiece> list) {
 		super(currPiece, move, list); 
@@ -58,7 +57,7 @@ public class King extends Piece{
 			if (checkingPiece.toString().charAt(3) == 'W') checkingIsWhite = 1;
 			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
 			
-			if (checkingIsWhite != isWhite) { //diff color i.e. ENEMY!!!!
+			if (checkingIsWhite != isWhite) { //diff color: ENEMY PIECE!
 				//Rook-type check
 				if ((checkingFile == currFile ^ checkingRank == currRank) &&
 				(checkingPiece.toString().charAt(4) == 'Q' || checkingPiece.toString().charAt(4) == 'R')) { //if queen/bishop
