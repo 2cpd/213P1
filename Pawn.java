@@ -14,7 +14,7 @@ public class Pawn extends Piece {
 	
 	public Pawn(ReturnPiece currPiece, String move, ArrayList<ReturnPiece> list) {
 		super(currPiece,move,list);
-		if (tarPiece != null) {
+		if (!tarPiece.equals(null)) {
 			tarColor = tarPiece.pieceType.toString().charAt(0); //'W' or 'B'
 		}
 	}
@@ -124,11 +124,13 @@ public class Pawn extends Piece {
 		}
 	
 	public boolean canPromote() {
-		if (isWhite == 1 && currRank == 7 && tarRank == 8) {
+		if (this.isValidMove()) {
+			if (isWhite == 1 && currRank == 7 && tarRank == 8) {
 				return true;
 			}
-		else if (isWhite == 0 && currRank == 2 && tarRank == 1) {
-			return true;
+			else if (isWhite == 0 && currRank == 2 && tarRank == 1) {
+				return true;
+			}
 		}
 		return false;
 	}

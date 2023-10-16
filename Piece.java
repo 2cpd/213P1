@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Piece extends Chess {
 	char currColor; int isWhite; //1 if white, 0 if black
-	String move; ReturnPiece currPiece; ReturnPiece tarPiece;
+	String move; ReturnPiece currPiece; ReturnPiece tarPiece = null;
 	ArrayList<ReturnPiece> piecesList;
 	
 	int currFile, tarFile, currRank, tarRank;
@@ -35,7 +35,7 @@ public class Piece extends Chess {
 	}
 	
 	public boolean isBlocked() { //default blocked check
-		if (tarPiece != null && tarPiece.toString().charAt(3) == currColor) {
+		if (!tarPiece.equals(null) && tarPiece.toString().charAt(3) == currColor) {
 			return true;
 		}
 		return false;
