@@ -107,7 +107,7 @@ public class Queen extends Piece{
 			ReturnPiece checkingPiece = piecesList.get(i);
 			int checkingFile = checkingPiece.toString().charAt(0) - '`'; //numerical value of current file/rank checked
 			int checkingRank = checkingPiece.toString().charAt(1) - '0';
-			int checkingIsWhite;
+			int checkingIsWhite = 0;
 			if (checkingPiece.toString().charAt(3) == 'W') checkingIsWhite = 1;
 			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
 			
