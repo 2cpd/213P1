@@ -222,7 +222,8 @@ public class King extends Piece{
 					return false;
 			}
 			return true;
-		}return false;
+		}
+		return false;
 	}
 }
 
