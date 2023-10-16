@@ -212,8 +212,17 @@ public class King extends Piece{
 			if (directionOfCheck[i])
 				return true;
 		}
-		
 		return false;
+	}
+	
+	public boolean isMate() {
+		if (this.isInCheck()) {
+			for (int i = 0; i < directionOfCheck.length; i++) {
+				if (!directionOfCheck[i])
+					return false;
+			}
+			return true;
+		}return false;
 	}
 }
 
