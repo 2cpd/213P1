@@ -32,18 +32,18 @@ public class Rook extends Piece{
 			
 			if (checkingIsWhite == isWhite) {
 				if (checkingRank == currRank && checkingFile != currFile) { //horiz
-					if (tarRank > currRank && checkingFile < tarFile) { //block right
+					if (tarFile > currFile && checkingFile > currFile && checkingFile < tarFile) { //block right
 						return true;
 					}
-					else if (tarRank < currRank && checkingFile > tarFile) { //left
+					else if (tarFile < currFile && checkingFile < currFile && checkingFile > tarFile) { //left
 						return true;
 					}
 				}
 				else if (checkingFile == currFile && checkingRank != currRank) { //vert
-					if (tarRank > currRank && checkingRank < tarRank) { //up
+					if (tarRank > currRank && checkingRank > currRank && checkingRank < tarRank) { //up
 						return true;
 					}
-					else if (tarRank < currRank && checkingRank > tarRank) { //down
+					else if (tarRank < currRank && checkingRank < currRank && checkingRank > tarRank) { //down
 						return true;
 					}
 				}

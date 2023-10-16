@@ -35,7 +35,7 @@ public class Bishop extends Piece{
 		return false;
 	}
 	
-	public boolean isBlocked(int quadrant) {
+	public boolean isBlocked() {
 		int fileDiff = tarFile - currFile; //xDiff
 		int rankDiff = tarRank - currRank; //yDiff
 		for (int i = 0; i < piecesList.size(); i++) {
@@ -49,7 +49,7 @@ public class Bishop extends Piece{
 			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
 			
 			if (checkingIsWhite == isWhite && Math.abs(checkingRankDiff) == Math.abs(checkingFileDiff)) {
-				if (Math.abs(rankDiff) == Math.abs(fileDiff) && Math.abs(fileDiff) != 0) {
+				if (Math.abs(rankDiff) == Math.abs(fileDiff) && checkingFile != currFile) {
 					if (fileDiff > 0 && rankDiff > 0 && checkingFileDiff > 0 && checkingRankDiff > 0) { //Q1, for both tar-curr and checking-curr
 						if (checkingFileDiff < fileDiff && checkingRankDiff < rankDiff)
 							return true;

@@ -76,7 +76,7 @@ public class Queen extends Piece{
 			else if (checkingPiece.toString().charAt(3) == 'B') checkingIsWhite = 0;
 			
 			if (checkingIsWhite == isWhite && Math.abs(checkingRankDiff) == Math.abs(checkingFileDiff)) {
-				if (Math.abs(rankDiff) == Math.abs(fileDiff) && checkingFile != currFile && checkingRank != currRank) {
+				if (Math.abs(rankDiff) == Math.abs(fileDiff) && checkingFile != currFile) {
 					if (fileDiff > 0 && rankDiff > 0 && checkingFileDiff > 0 && checkingRankDiff > 0) { //Q1, for both tar-curr and checking-curr
 						if (checkingFileDiff < fileDiff && checkingRankDiff < rankDiff)
 							return true;
