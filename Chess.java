@@ -41,8 +41,8 @@ public class Chess {
 	public static ArrayList<ReturnPiece> piecesList = new ArrayList<ReturnPiece>();
 	//public static ArrayList<Boolean> isKingFirstMove = new ArrayList<Boolean>();
 	//public static ArrayList<Boolean> isRookFirstMove = new ArrayList<Boolean>();
-	public static boolean[] isRookFirstMove = {false, false, false, false}; //first 2 white, last 2 black, left first then right
-	public static boolean[] isKingFirstMove = {false, false}; //white first
+	public static boolean[] isRookFirstMove = {true, true, true, true}; //first 2 white, last 2 black, left first then right
+	public static boolean[] isKingFirstMove = {true, true}; //white first
 	
 	public static Chess.Player currPlayer = Chess.Player.white;
 	
@@ -85,54 +85,79 @@ public class Chess {
 				whiteKing = new King (currReturnPiece, move, piecesList);
 			}
 		}
-		
+		boolean spaceCheck = false;
 		for (int i = 0; i < piecesList.size(); i++) { //find piece
 			ReturnPiece currReturnPiece = piecesList.get(i);
 			
 			if (currReturnPiece.pieceFile.toString().charAt(0) == move.charAt(0) && //column
 				currReturnPiece.pieceRank == move.charAt(1) - '0') { // row //find the piece
-				
+				spaceCheck = true;
 					/**create chess type**/
 					if (currReturnPiece.pieceType == ReturnPiece.PieceType.BK ||
 						currReturnPiece.pieceType == ReturnPiece.PieceType.WK) { //if king
 							thisPiece = new King (currReturnPiece, move, piecesList);
+							if (thisPiece.isValidMove() == false) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+								return temp;
+							}
 					}
 					
 					else if (currReturnPiece.pieceType == ReturnPiece.PieceType.BB ||
 						currReturnPiece.pieceType == ReturnPiece.PieceType.WB) { //if bishop
 							thisPiece = new Bishop (currReturnPiece, move, piecesList);
+							if (thisPiece.isValidMove() == false) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+								return temp;
+							}
 					}
 					
 					else if (currReturnPiece.pieceType == ReturnPiece.PieceType.BN ||
 						currReturnPiece.pieceType == ReturnPiece.PieceType.WN) { //if knight
 							thisPiece = new Knight (currReturnPiece, move, piecesList);
+							if (thisPiece.isValidMove() == false) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+								return temp;
+							}
 					}
 					
 					else if (currReturnPiece.pieceType == ReturnPiece.PieceType.BP ||
 						currReturnPiece.pieceType == ReturnPiece.PieceType.WP) { //if pawn
 							thisPiece = new Pawn (currReturnPiece, move, piecesList);
+							if (thisPiece.isValidMove() == false) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+								return temp;
+							}
 					}
 					
 					else if (currReturnPiece.pieceType == ReturnPiece.PieceType.BQ ||
 						currReturnPiece.pieceType == ReturnPiece.PieceType.WQ) { //if queen
 							thisPiece = new Queen (currReturnPiece, move, piecesList);
+							if (thisPiece.isValidMove() == false) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+								return temp;
+							}
 					}
 					
 					else if (currReturnPiece.pieceType == ReturnPiece.PieceType.BR||
 						currReturnPiece.pieceType == ReturnPiece.PieceType.WR) { //if rook
 							thisPiece = new Rook (currReturnPiece, move, piecesList);
+							if (thisPiece.isValidMove() == false) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+								return temp;
+							}
 					}
 					else { //no Piece on that tile
 						temp.piecesOnBoard = piecesList;
 						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
 						return temp;
 					}
-					
-					boolean requestedMoveValid = thisPiece.isValidMove();
 					/**create chess type**/
-					
-					//check if input String move is not gibberish
-					//...
 					
 					//if currColor != playerColor
 					if (thisPiece.isWhite != playerIsWhite) {
@@ -141,34 +166,28 @@ public class Chess {
 						return temp;
 					}
 					
-					//if move is not out of bounds
+					//outOfBounds check
 					if (thisPiece.tarFile > 8 || thisPiece.tarFile < 1 || thisPiece.tarRank > 8 || thisPiece.tarRank < 1) {
 						temp.piecesOnBoard = piecesList;
 						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
 						return temp;
 					}
 					
-					//if king is inCheck
-					if (playerIsWhite == 1 && whiteKing.isInCheck()) {
-						temp.piecesOnBoard = piecesList;
-						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
-						return temp;
-					}
+					//enPassant check
 					
 					/**move**/
 					tempPiece.pieceType = currReturnPiece.pieceType; 
-					
 					tempPiece.pieceFile = findFile(move.charAt(3));
-					
 					tempPiece.pieceRank = move.charAt(4) - '0';
+					//if type == Rook: isRookFirstMove == false for that Rook
+					//isCheck
+					
+					
 					piecesList.remove(i);
 					piecesList.add(tempPiece);
 					/**move**/
-					
-					//after move
-					lastPiece = thisPiece; //record most recent move in lastPiece
-					
-					if (currReturnPiece.pieceType.toString() == "WK"|| currReturnPiece.pieceType.toString() == "BK") { //check castling
+				
+					/*if (currReturnPiece.pieceType.toString() == "WK"|| currReturnPiece.pieceType.toString() == "BK") { //check castling
 						King tempKing = new King(currReturnPiece, move, piecesList);
 						if (tempKing.isCastle == true) {
 							castlingSetting(move);
@@ -177,22 +196,101 @@ public class Chess {
 								return temp;
 							}
 						}
-					} 
-				
+					} */
 					
+					
+					//update lastPiece storing most recent move
+					lastPiece = thisPiece;
 					
 					/**capture**/
 					for (int j = 0; j < piecesList.size(); j++) {
-						if (piecesList.get(i) == currReturnPiece) continue; //same chess as the current one skips
-						
+						if (piecesList.get(i) == currReturnPiece) {
+							//same chess as the current one skips
+							if (j == piecesList.size()-1) break;
+							continue;
+						}
 						ReturnPiece enemyPiece = piecesList.get(i);
 						if (enemyPiece.pieceFile.toString().charAt(0) == move.charAt(3) && //column
 							enemyPiece.pieceRank == move.charAt(4) - '0') { //there is an enemy chess, no need to check type because it was checked earlier
 								piecesList.remove(i);
+								break;
 						}
 					}
 					/**capture**/
 					
+					//castling check
+					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WK) {
+						if (thisPiece.isCastle && isKingFirstMove[0]) { //ignore warning, piece is confirmed to be king
+							int kingFile = thisPiece.tarFile; //int kingRank = 1;
+							for (int r = 0; r < piecesList.size(); r++) {
+								ReturnPiece checkingPiece = piecesList.get(r);
+								if (checkingPiece.pieceType == ReturnPiece.PieceType.WR) {
+									int rookFile = checkingPiece.toString().charAt(0) - '`';
+									int rookRank = checkingPiece.toString().charAt(1) - '0';
+									if (isRookFirstMove[0] && rookFile == 1 && rookRank == 1 && kingFile == 3) {
+										//move SW Rook
+										ReturnPiece tempRook;
+										//Rook moves from from a1 to d1
+										tempRook.pieceType = ReturnPiece.PieceType.WR; 
+										tempPiece.pieceFile = ReturnPiece.PieceFile.d;
+										tempPiece.pieceRank = 1;
+										piecesList.remove(r);
+										piecesList.add(tempPiece);
+										isRookFirstMove[0] = false;
+									}
+									else if (isRookFirstMove[1] && rookFile == 8 && rookRank == 1 && kingFile == 7) {
+										//move SE Rook
+										ReturnPiece tempRook;
+										//Rook moves from from h1 to f1
+										tempRook.pieceType = ReturnPiece.PieceType.WR; 
+										tempPiece.pieceFile = ReturnPiece.PieceFile.f;
+										tempPiece.pieceRank = 1;
+										piecesList.remove(r);
+										piecesList.add(tempPiece);
+										isRookFirstMove[1] = false;
+									}
+								}
+							}
+						}
+					}
+					else if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BK) {
+						if (thisPiece.isCastle && isKingFirstMove[0]) { //ignore warning, piece is confirmed to be king
+							int kingFile = thisPiece.tarFile; //int kingRank = 1;
+							for (int r = 0; r < piecesList.size(); r++) {
+								ReturnPiece checkingPiece = piecesList.get(r);
+								if (checkingPiece.pieceType == ReturnPiece.PieceType.WR) {
+									int rookFile = checkingPiece.toString().charAt(0) - '`';
+									int rookRank = checkingPiece.toString().charAt(1) - '0';
+									if (isRookFirstMove[2] && rookFile == 1 && rookRank == 8 && kingFile == 3) {
+										//move NW Rook
+										ReturnPiece tempRook;
+										//Rook moves from from a8 to d8
+										tempRook.pieceType = ReturnPiece.PieceType.BR; 
+										tempPiece.pieceFile = ReturnPiece.PieceFile.d;
+										tempPiece.pieceRank = 8;
+										piecesList.remove(r);
+										piecesList.add(tempPiece);
+										isRookFirstMove[2] = false;
+									}
+									else if (isRookFirstMove[3] && rookFile == 8 && rookRank == 8 && kingFile == 7) {
+										//move NE Rook
+										ReturnPiece tempRook;
+										//Rook moves from from h8 to f8
+										tempRook.pieceType = ReturnPiece.PieceType.BR; 
+										tempPiece.pieceFile = ReturnPiece.PieceFile.f;
+										tempPiece.pieceRank = 8;
+										piecesList.remove(r);
+										piecesList.add(tempPiece);
+										isRookFirstMove[3] = false;
+									}
+								}
+							}
+						}
+					}
+					
+					//promotion check
+					
+					//draw check
 					if (move.length() == 11 && move.substring(6, 11) == "draw?") { //propose draw
 						System.out.print(ReturnPlay.Message.DRAW);
 						return null; //need revise here, return ?
@@ -202,16 +300,19 @@ public class Chess {
 			
 			
 		}
+		if (spaceCheck == false) {
+			temp.piecesOnBoard = piecesList;
+			System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+			return temp;
+		}
 		
 		temp.piecesOnBoard = piecesList;
 		
 		if (currPlayer == Chess.Player.white) { //switch side
 			currPlayer = Chess.Player.black;
-			//System.out.println("Change to black");
 		}
 		else {
 			currPlayer = Chess.Player.white;
-			//System.out.println("Change to white");
 		}
 		
 		/* FOLLOWING LINE IS A PLACEHOLDER TO MAKE COMPILER HAPPY */
