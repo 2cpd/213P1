@@ -21,10 +21,6 @@ public class Pawn extends Piece {
 	}
 	
 	public boolean isValidMove() {
-		if (currPiece.pieceType != ReturnPiece.PieceType.WP || currPiece.pieceType != ReturnPiece.PieceType.BP) {
-			return false;
-		}
-		
 		if (!this.isBlocked() && tarFile == currFile) { //target cell is empty & in same column(file)
 			//white
 			if (isWhite == 1) {
