@@ -33,13 +33,16 @@ public class Pawn extends Piece {
 						ReturnPiece checkingPiece = piecesList.get(i);
 						int checkingFile = checkingPiece.toString().charAt(0) - '`';
 						int checkingRank = checkingPiece.toString().charAt(1) - '0';
-						if (checkingFile == currFile && checkingRank == currRank + 1 && Objects.isNull(tarPiece)) {
-							hasMovedTwo = true;
-							return true;
+						if (checkingFile == currFile && checkingRank == currRank + 1) {
+							if (!Objects.isNull(tarPiece)) return false;
+							else {
+								hasMovedTwo = true;
+								return true;
+							}
 						}
 					}
 				}
-				if (tarRank == currRank + 1) { //regular rule
+				else if (tarRank == currRank + 1) { //regular rule
 					hasMovedTwo = false;
 					return true;
 				}
@@ -51,13 +54,16 @@ public class Pawn extends Piece {
 						ReturnPiece checkingPiece = piecesList.get(i);
 						int checkingFile = checkingPiece.toString().charAt(0) - '`';
 						int checkingRank = checkingPiece.toString().charAt(1) - '0';
-						if (checkingFile == currFile && checkingRank == currRank - 1 && Objects.isNull(tarPiece)) {
-							hasMovedTwo = true;
-							return true;
+						if (checkingFile == currFile && checkingRank == currRank - 1) {
+							if (!Objects.isNull(tarPiece)) return false;
+							else {
+								hasMovedTwo = true;
+								return true;
+							}
 						}
 					}
 				}
-				if (tarRank == currRank - 1) {
+				else if (tarRank == currRank - 1) {
 					hasMovedTwo = false;
 					return true;
 				}
