@@ -161,13 +161,6 @@ public class Chess {
 					}
 					/**create chess type**/
 					
-					//if input is garbage
-					/*if (move.length() != 5 && move.length() != 7 && move.length() != 11) {
-						temp.piecesOnBoard = piecesList;
-						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
-						return temp;
-					}*/
-					
 					//if currColor != playerColor
 					if (thisPiece.isWhite != playerIsWhite) {
 						temp.piecesOnBoard = piecesList;
@@ -185,8 +178,8 @@ public class Chess {
 					//enPassant check
 					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WP || 
 					thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BP) {
-						if (thisPiece.isEnPassant() && !Objects.isNull(lastPiece) && 
-						lastPiece.currPiece.equals(thisPiece.capturedPiece)) {
+						if (((Pawn)thisPiece).isEnPassant() && !Objects.isNull(lastPiece) && 
+						lastPiece.currPiece.equals(((Pawn)thisPiece).capturedPiece)) {
 						//if the last piece moved is the same as the piece now being captured; ignore warning
 							for (int e = 0; e < piecesList.size(); e++) {
 								if (piecesList.get(e).equals(lastPiece)) {
@@ -255,16 +248,16 @@ public class Chess {
 					
 					//castling check
 					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WK) {
-						if (thisPiece.isCastle && isKingFirstMove[0]) { //ignore warning, piece is confirmed to be king
+						if (((King)thisPiece).isCastle && isKingFirstMove[0]) {
 							int kingFile = thisPiece.tarFile; //int kingRank = 1;
 							for (int r = 0; r < piecesList.size(); r++) {
 								ReturnPiece checkingPiece = piecesList.get(r);
 								if (checkingPiece.pieceType == ReturnPiece.PieceType.WR) {
 									int rookFile = checkingPiece.toString().charAt(0) - '`';
 									int rookRank = checkingPiece.toString().charAt(1) - '0';
+									ReturnPiece tempRook = null;
 									if (isRookFirstMove[0] && rookFile == 1 && rookRank == 1 && kingFile == 3) {
 										//move SW Rook
-										ReturnPiece tempRook;
 										//Rook moves from from a1 to d1
 										tempRook.pieceType = ReturnPiece.PieceType.WR; 
 										tempRook.pieceFile = ReturnPiece.PieceFile.d;
@@ -275,7 +268,6 @@ public class Chess {
 									}
 									else if (isRookFirstMove[1] && rookFile == 8 && rookRank == 1 && kingFile == 7) {
 										//move SE Rook
-										ReturnPiece tempRook;
 										//Rook moves from from h1 to f1
 										tempRook.pieceType = ReturnPiece.PieceType.WR; 
 										tempRook.pieceFile = ReturnPiece.PieceFile.f;
@@ -289,16 +281,16 @@ public class Chess {
 						}
 					}
 					else if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BK) {
-						if (thisPiece.isCastle && isKingFirstMove[0]) { //ignore warning, piece is confirmed to be king
+						if (((King)thisPiece).isCastle && isKingFirstMove[0]) {
 							int kingFile = thisPiece.tarFile; //int kingRank = 1;
 							for (int r = 0; r < piecesList.size(); r++) {
 								ReturnPiece checkingPiece = piecesList.get(r);
 								if (checkingPiece.pieceType == ReturnPiece.PieceType.WR) {
 									int rookFile = checkingPiece.toString().charAt(0) - '`';
 									int rookRank = checkingPiece.toString().charAt(1) - '0';
+									ReturnPiece tempRook = null;
 									if (isRookFirstMove[2] && rookFile == 1 && rookRank == 8 && kingFile == 3) {
 										//move NW Rook
-										ReturnPiece tempRook;
 										//Rook moves from from a8 to d8
 										tempRook.pieceType = ReturnPiece.PieceType.BR; 
 										tempRook.pieceFile = ReturnPiece.PieceFile.d;
@@ -309,7 +301,6 @@ public class Chess {
 									}
 									else if (isRookFirstMove[3] && rookFile == 8 && rookRank == 8 && kingFile == 7) {
 										//move NE Rook
-										ReturnPiece tempRook;
 										//Rook moves from from h8 to f8
 										tempRook.pieceType = ReturnPiece.PieceType.BR; 
 										tempRook.pieceFile = ReturnPiece.PieceFile.f;
@@ -325,7 +316,7 @@ public class Chess {
 					
 					//promotion check
 					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WP && thisPiece.currRank == 8) {
-						ReturnPiece promoted;
+						ReturnPiece promoted = null;
 						promoted.pieceFile = findFile(move.charAt(3));
 						promoted.pieceRank = move.charAt(4) - '0';
 						
@@ -355,7 +346,7 @@ public class Chess {
 						}
 					}
 					else if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BP && thisPiece.currRank == 1) {
-						ReturnPiece promoted;
+						ReturnPiece promoted = null;
 						promoted.pieceFile = findFile(move.charAt(3));
 						promoted.pieceRank = move.charAt(4) - '0';
 						
