@@ -29,7 +29,7 @@ public class Pawn extends Piece {
 			//white
 			if (isWhite == 1) {
 				if (currRank == 2 && tarRank == currRank + 2) { //first move: can move 2
-					ReturnPiece checkingPiece;
+					ReturnPiece checkingPiece = null;
 					for (int i = 0; i < piecesList.size(); i++) {
 						checkingPiece = piecesList.get(i);
 						int checkingFile = checkingPiece.toString().charAt(0) - '`';
@@ -53,7 +53,7 @@ public class Pawn extends Piece {
 			//black
 			else if (isWhite == 0) {
 				if (currRank == 7 && tarRank == currRank - 2) {
-					ReturnPiece checkingPiece;
+					ReturnPiece checkingPiece = null;
 					for (int i = 0; i < piecesList.size(); i++) {
 						checkingPiece = piecesList.get(i);
 						int checkingFile = checkingPiece.toString().charAt(0) - '`';
