@@ -187,13 +187,13 @@ public class Chess {
 					
 					//** TO BE IMPLEMENTED isCheck
 						//return ILLEGAL_MOVE if king is in check
-					for (int i = 0; i < piecesList.size(); i++) { //find kings
-						ReturnPiece currReturnPiece = piecesList.get(i);
-						if (currReturnPiece.pieceType == ReturnPiece.PieceType.BK) { //if BK
-							blackKing = new King (currReturnPiece, move, piecesList);
+					for (int k = 0; k < piecesList.size(); k++) { //find kings
+						ReturnPiece kingReturnPiece = piecesList.get(i);
+						if (kingReturnPiece.pieceType == ReturnPiece.PieceType.BK) { //if BK
+							blackKing = new King (kingReturnPiece, move, piecesList);
 						}
-						else if (currReturnPiece.pieceType == ReturnPiece.PieceType.WK) { //if WK
-							whiteKing = new King (currReturnPiece, move, piecesList);
+						else if (kingReturnPiece.pieceType == ReturnPiece.PieceType.WK) { //if WK
+							whiteKing = new King (kingReturnPiece, move, piecesList);
 						}
 					}
 					
