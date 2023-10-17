@@ -129,9 +129,10 @@ public class Chess {
 					}
 					
 					boolean requestedMoveValid = thisPiece.isValidMove();
-					System.out.println("testmessage");
-					System.out.println(thisPiece == null);
 					/**create chess type**/
+					
+					//check if input String move is not gibberish
+					//...
 					
 					//if currColor != playerColor
 					if (thisPiece.isWhite != playerIsWhite) {
@@ -140,8 +141,15 @@ public class Chess {
 						return temp;
 					}
 					
-					////if currColor != playerColor
+					//if move is not out of bounds
 					if (thisPiece.tarFile > 8 || thisPiece.tarFile < 1 || thisPiece.tarRank > 8 || thisPiece.tarRank < 1) {
+						temp.piecesOnBoard = piecesList;
+						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+						return temp;
+					}
+					
+					//if king is inCheck
+					if (playerIsWhite == 1 && whiteKing.isInCheck()) {
 						temp.piecesOnBoard = piecesList;
 						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
 						return temp;
@@ -156,7 +164,10 @@ public class Chess {
 					piecesList.remove(i);
 					piecesList.add(tempPiece);
 					/**move**/
-				
+					
+					//after move
+					lastPiece = thisPiece; //record most recent move in lastPiece
+					
 					if (currReturnPiece.pieceType.toString() == "WK"|| currReturnPiece.pieceType.toString() == "BK") { //check castling
 						King tempKing = new King(currReturnPiece, move, piecesList);
 						if (tempKing.isCastle == true) {
@@ -170,7 +181,7 @@ public class Chess {
 				
 					
 					
-					/*************find enemy chess and kill it****************/
+					/**capture**/
 					for (int j = 0; j < piecesList.size(); j++) {
 						if (piecesList.get(i) == currReturnPiece) continue; //same chess as the current one skips
 						
@@ -180,7 +191,7 @@ public class Chess {
 								piecesList.remove(i);
 						}
 					}
-					/*************find enemy chess and kill it****************/
+					/**capture**/
 					
 					if (move.length() == 11 && move.substring(6, 11) == "draw?") { //propose draw
 						System.out.print(ReturnPlay.Message.DRAW);
@@ -196,11 +207,11 @@ public class Chess {
 		
 		if (currPlayer == Chess.Player.white) { //switch side
 			currPlayer = Chess.Player.black;
-			System.out.println("Change to black");
+			//System.out.println("Change to black");
 		}
 		else {
 			currPlayer = Chess.Player.white;
-			System.out.println("Change to white");
+			//System.out.println("Change to white");
 		}
 		
 		/* FOLLOWING LINE IS A PLACEHOLDER TO MAKE COMPILER HAPPY */
