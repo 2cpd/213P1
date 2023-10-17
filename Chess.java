@@ -60,6 +60,7 @@ public class Chess {
 		
 		/* FILL IN THIS METHOD */
 		if (move == "resign") return null; //resign, need revise here, what to return?
+		if (move == "quit") return null; //needs to be revised too
 		
 		ReturnPlay temp = new ReturnPlay();
 		ReturnPiece tempPiece = new ReturnPiece();
@@ -160,6 +161,13 @@ public class Chess {
 					}
 					/**create chess type**/
 					
+					//if input is garbage
+					/*if (move.length() != 5 && move.length() != 7 && move.length() != 11) {
+						temp.piecesOnBoard = piecesList;
+						System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+						return temp;
+					}*/
+					
 					//if currColor != playerColor
 					if (thisPiece.isWhite != playerIsWhite) {
 						temp.piecesOnBoard = piecesList;
@@ -259,10 +267,10 @@ public class Chess {
 										ReturnPiece tempRook;
 										//Rook moves from from a1 to d1
 										tempRook.pieceType = ReturnPiece.PieceType.WR; 
-										tempPiece.pieceFile = ReturnPiece.PieceFile.d;
-										tempPiece.pieceRank = 1;
+										tempRook.pieceFile = ReturnPiece.PieceFile.d;
+										tempRook.pieceRank = 1;
 										piecesList.remove(r);
-										piecesList.add(tempPiece);
+										piecesList.add(tempRook);
 										isRookFirstMove[0] = false;
 									}
 									else if (isRookFirstMove[1] && rookFile == 8 && rookRank == 1 && kingFile == 7) {
@@ -270,10 +278,10 @@ public class Chess {
 										ReturnPiece tempRook;
 										//Rook moves from from h1 to f1
 										tempRook.pieceType = ReturnPiece.PieceType.WR; 
-										tempPiece.pieceFile = ReturnPiece.PieceFile.f;
-										tempPiece.pieceRank = 1;
+										tempRook.pieceFile = ReturnPiece.PieceFile.f;
+										tempRook.pieceRank = 1;
 										piecesList.remove(r);
-										piecesList.add(tempPiece);
+										piecesList.add(tempRook);
 										isRookFirstMove[1] = false;
 									}
 								}
@@ -293,10 +301,10 @@ public class Chess {
 										ReturnPiece tempRook;
 										//Rook moves from from a8 to d8
 										tempRook.pieceType = ReturnPiece.PieceType.BR; 
-										tempPiece.pieceFile = ReturnPiece.PieceFile.d;
-										tempPiece.pieceRank = 8;
+										tempRook.pieceFile = ReturnPiece.PieceFile.d;
+										tempRook.pieceRank = 8;
 										piecesList.remove(r);
-										piecesList.add(tempPiece);
+										piecesList.add(tempRook);
 										isRookFirstMove[2] = false;
 									}
 									else if (isRookFirstMove[3] && rookFile == 8 && rookRank == 8 && kingFile == 7) {
@@ -304,10 +312,10 @@ public class Chess {
 										ReturnPiece tempRook;
 										//Rook moves from from h8 to f8
 										tempRook.pieceType = ReturnPiece.PieceType.BR; 
-										tempPiece.pieceFile = ReturnPiece.PieceFile.f;
-										tempPiece.pieceRank = 8;
+										tempRook.pieceFile = ReturnPiece.PieceFile.f;
+										tempRook.pieceRank = 8;
 										piecesList.remove(r);
-										piecesList.add(tempPiece);
+										piecesList.add(tempRook);
 										isRookFirstMove[3] = false;
 									}
 								}
@@ -316,7 +324,66 @@ public class Chess {
 					}
 					
 					//promotion check
-					
+					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WP && thisPiece.currRank == 8) {
+						ReturnPiece promoted;
+						promoted.pieceFile = findFile(move.charAt(3));
+						promoted.pieceRank = move.charAt(4) - '0';
+						
+						for (int p = 0; p < piecesList.size(); p++) { //find original piece index in list
+							ReturnPiece tempPiece2 = piecesList.get(p);
+							if (tempPiece2.pieceFile == promoted.pieceFile && tempPiece2.pieceRank == promoted.pieceRank) {
+								if (move.length() == 7 && move.substring(6).equals("R")) {
+									promoted.pieceType = ReturnPiece.PieceType.WR;
+								}
+								else if (move.length() == 7 && move.substring(6).equals("B")) {
+									promoted.pieceType = ReturnPiece.PieceType.WB;
+								}
+								else if (move.length() == 7 && move.substring(6).equals("N")) {
+									promoted.pieceType = ReturnPiece.PieceType.WN;
+								}
+								else if (move.length() == 7 && move.substring(6).equals("Q") == false) { //extra character but promotion type is not Q
+									temp.piecesOnBoard = piecesList;
+									System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+									return temp;
+								}
+								else { //defaults to Q promotion
+									promoted.pieceType = ReturnPiece.PieceType.WQ;
+								}
+								piecesList.remove(p);
+								piecesList.add(promoted);
+							}
+						}
+					}
+					else if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BP && thisPiece.currRank == 1) {
+						ReturnPiece promoted;
+						promoted.pieceFile = findFile(move.charAt(3));
+						promoted.pieceRank = move.charAt(4) - '0';
+						
+						for (int p = 0; p < piecesList.size(); p++) { //find original piece index in list
+							ReturnPiece tempPiece2 = piecesList.get(p);
+							if (tempPiece2.pieceFile == promoted.pieceFile && tempPiece2.pieceRank == promoted.pieceRank) {
+								if (move.length() == 7 && move.substring(6).equals("R")) {
+									promoted.pieceType = ReturnPiece.PieceType.BR;
+								}
+								else if (move.length() == 7 && move.substring(6).equals("B")) {
+									promoted.pieceType = ReturnPiece.PieceType.BB;
+								}
+								else if (move.length() == 7 && move.substring(6).equals("N")) {
+									promoted.pieceType = ReturnPiece.PieceType.BN;
+								}
+								else if (move.length() == 7 && move.substring(6).equals("Q") == false) { //extra character but promotion type is not Q
+									temp.piecesOnBoard = piecesList;
+									System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+									return temp;
+								}
+								else {
+									promoted.pieceType = ReturnPiece.PieceType.BQ;
+								}
+								piecesList.remove(p);
+								piecesList.add(promoted);
+							}
+						}
+					}
 					//draw check
 					if (move.length() == 11 && move.substring(6, 11) == "draw?") { //propose draw
 						System.out.print(ReturnPlay.Message.DRAW);
