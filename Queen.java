@@ -3,19 +3,11 @@ package chess;
 import java.util.ArrayList;
 
 public class Queen extends Piece{
-	private ReturnPiece currPiece;
-	private String Move;
-	private ArrayList<ReturnPiece> piecesList;
-	
 	public Queen(ReturnPiece currPiece, String move, ArrayList<ReturnPiece> list) {
-		super(currPiece, move, list);
+		super(currPiece,move,list);
 	}
 	
-	public boolean isValidMove() {
-		if (currPiece.pieceType != ReturnPiece.PieceType.WQ || currPiece.pieceType != ReturnPiece.PieceType.BQ) { // if queen
-			return false;
-		}
-		
+	public boolean isValidMove() {		
 		int fileDiff = tarFile - currFile;
 		int rankDiff = tarRank - currRank;
 		
