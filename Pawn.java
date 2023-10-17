@@ -2,6 +2,7 @@ package chess;
 
 import java.lang.Math;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Pawn extends Piece {
 	ReturnPiece capturedPiece;
@@ -14,7 +15,7 @@ public class Pawn extends Piece {
 	
 	public Pawn(ReturnPiece currPiece, String move, ArrayList<ReturnPiece> list) {
 		super(currPiece,move,list);
-		if (!tarPiece.equals(null)) {
+		if (!Objects.isNull(tarPiece)) {
 			tarColor = tarPiece.pieceType.toString().charAt(0); //'W' or 'B'
 		}
 	}
