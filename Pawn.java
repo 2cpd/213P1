@@ -29,8 +29,15 @@ public class Pawn extends Piece {
 			//white
 			if (isWhite == 1) {
 				if (currRank == 2 && tarRank == currRank + 2) { //first move: can move 2
-					hasMovedTwo = true;
-					return true;
+					for (int i = 0; i < piecesList.size(); i++) {
+						ReturnPiece checkingPiece = piecesList.get(i);
+						int checkingFile = checkingPiece.toString().charAt(0) - '`';
+						int checkingRank = checkingPiece.toString().charAt(1) - '0';
+						if (checkingFile == currFile && checkingRank == currRank + 1 && Objects.isNull(tarPiece)) {
+							hasMovedTwo = true;
+							return true;
+						}
+					}
 				}
 				if (tarRank == currRank + 1) { //regular rule
 					hasMovedTwo = false;
@@ -40,8 +47,15 @@ public class Pawn extends Piece {
 			//black
 			else if (isWhite == 0) {
 				if (currRank == 7 && tarRank == currRank - 2) {
-					hasMovedTwo = true;
-					return true;
+					for (int i = 0; i < piecesList.size(); i++) {
+						ReturnPiece checkingPiece = piecesList.get(i);
+						int checkingFile = checkingPiece.toString().charAt(0) - '`';
+						int checkingRank = checkingPiece.toString().charAt(1) - '0';
+						if (checkingFile == currFile && checkingRank == currRank - 1 && Objects.isNull(tarPiece)) {
+							hasMovedTwo = true;
+							return true;
+						}
+					}
 				}
 				if (tarRank == currRank - 1) {
 					hasMovedTwo = false;
