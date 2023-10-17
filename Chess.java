@@ -59,10 +59,23 @@ public class Chess {
 	public static ReturnPlay play(String move) {
 		
 		/* FILL IN THIS METHOD */
-		if (move == "resign") return null; //resign, need revise here, what to return?
 		
 		ReturnPlay temp = new ReturnPlay();
 		ReturnPiece tempPiece = new ReturnPiece();
+		
+		if (move == "resign") {
+			if (currPlayer == Chess.Player.white) {
+				temp.piecesOnBoard = piecesList;
+				System.out.print(ReturnPlay.Message.RESIGN_BLACK_WINS);
+				return temp;
+			}
+			else {
+				temp.piecesOnBoard = piecesList;
+				System.out.print(ReturnPlay.Message.RESIGN_WHITE_WINS);
+				return temp;
+			}
+			//return null; //resign, need revise here, what to return?
+		}
 		
 		if (move.charAt(0) == move.charAt(3) && move.charAt(1) == move.charAt(4)) { //same position
 			temp.piecesOnBoard = piecesList;
@@ -185,7 +198,7 @@ public class Chess {
 					tempPiece.pieceFile = findFile(move.charAt(3));
 					tempPiece.pieceRank = move.charAt(4) - '0';
 					
-					//** TO BE IMPLEMENTED isCheck
+					/**inCheck**/
 						//return ILLEGAL_MOVE if king is in check
 					for (int k = 0; k < piecesList.size(); k++) { //find kings
 						ReturnPiece kingReturnPiece = piecesList.get(i);
@@ -196,6 +209,183 @@ public class Chess {
 							whiteKing = new King (kingReturnPiece, move, piecesList);
 						}
 					}
+					if (playerIsWhite == 1) {
+						if (whiteKing.isInCheck()) {
+							//check if isMate
+							boolean canMove[] = {false,false,false,false,false,false,false,false}; //from N, clockwise
+							King tempWhiteKing = whiteKing;
+							if (whiteKing.directionOfCheck[0] == false || whiteKing.canCaptureCheck[0] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile;
+								tempWhiteKing.currRank = whiteKing.currRank + 1;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[0] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[1] == false || whiteKing.canCaptureCheck[1] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile + 1;
+								tempWhiteKing.currRank = whiteKing.currRank + 1;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[1] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[2] == false || whiteKing.canCaptureCheck[2] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile + 1;
+								tempWhiteKing.currRank = whiteKing.currRank;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[2] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[3] == false || whiteKing.canCaptureCheck[3] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile + 1;
+								tempWhiteKing.currRank = whiteKing.currRank - 1;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[3] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[4] == false || whiteKing.canCaptureCheck[4] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile;
+								tempWhiteKing.currRank = whiteKing.currRank - 1;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[4] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[5] == false || whiteKing.canCaptureCheck[5] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile - 1;
+								tempWhiteKing.currRank = whiteKing.currRank - 1;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[5] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[6] == false || whiteKing.canCaptureCheck[6] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile - 1;
+								tempWhiteKing.currRank = whiteKing.currRank;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[6] = true;
+								}
+							}
+							else if (whiteKing.directionOfCheck[7] == false || whiteKing.canCaptureCheck[7] == true) {
+								tempWhiteKing.currFile = whiteKing.currFile - 1;
+								tempWhiteKing.currRank = whiteKing.currRank + 1;
+								if (!tempWhiteKing.isInCheck()) {
+									canMove[7] = true;
+								}
+							}
+							
+							int checkCount = 0;
+							for (int cm = 0; cm < canMove.length; cm++) {
+								if (canMove[i] == false) 
+									checkCount++;
+							}
+							if (checkCount == 8) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.CHECKMATE_BLACK_WINS);
+								return temp;
+							}
+							//else if not mate
+							else {
+								System.out.print(ReturnPlay.Message.CHECK);
+								piecesList.add(tempPiece); //test if not in Check
+								if (whiteKing.isInCheck() == false) { //check if current move can free king
+									continue;
+								}
+								else { //deny current move
+									piecesList.remove(piecesList.size()-1); //remove tempPiece we just added
+									temp.piecesOnBoard = piecesList;
+									System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+									return temp;
+								}
+							}		
+						}
+					}
+					else if (playerIsWhite == 0) { //black
+						if (blackKing.isInCheck()) {
+							//check if isMate
+							boolean canMove[] = {false,false,false,false,false,false,false,false}; //from N, clockwise
+							King tempBlackKing = blackKing;
+							if (blackKing.directionOfCheck[0] == false || blackKing.canCaptureCheck[0] == true) {
+								tempBlackKing.currFile = blackKing.currFile;
+								tempBlackKing.currRank = blackKing.currRank + 1;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[0] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[1] == false || blackKing.canCaptureCheck[1] == true) {
+								tempBlackKing.currFile = blackKing.currFile + 1;
+								tempBlackKing.currRank = blackKing.currRank + 1;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[1] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[2] == false || blackKing.canCaptureCheck[2] == true) {
+								tempBlackKing.currFile = blackKing.currFile + 1;
+								tempBlackKing.currRank = blackKing.currRank;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[2] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[3] == false || blackKing.canCaptureCheck[3] == true) {
+								tempBlackKing.currFile = blackKing.currFile + 1;
+								tempBlackKing.currRank = blackKing.currRank - 1;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[3] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[4] == false || blackKing.canCaptureCheck[4] == true) {
+								tempBlackKing.currFile = blackKing.currFile;
+								tempBlackKing.currRank = blackKing.currRank - 1;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[4] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[5] == false || blackKing.canCaptureCheck[5] == true) {
+								tempBlackKing.currFile = blackKing.currFile - 1;
+								tempBlackKing.currRank = blackKing.currRank - 1;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[5] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[6] == false || blackKing.canCaptureCheck[6] == true) {
+								tempBlackKing.currFile = blackKing.currFile - 1;
+								tempBlackKing.currRank = blackKing.currRank;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[6] = true;
+								}
+							}
+							else if (blackKing.directionOfCheck[7] == false || blackKing.canCaptureCheck[7] == true) {
+								tempBlackKing.currFile = blackKing.currFile - 1;
+								tempBlackKing.currRank = blackKing.currRank + 1;
+								if (!tempBlackKing.isInCheck()) {
+									canMove[7] = true;
+								}
+							}
+							
+							int checkCount = 0;
+							for (int cm = 0; cm < canMove.length; cm++) {
+								if (canMove[i] == false) 
+									checkCount++;
+							}
+							if (checkCount == 8) {
+								temp.piecesOnBoard = piecesList;
+								System.out.print(ReturnPlay.Message.CHECKMATE_WHITE_WINS);
+								return temp;
+							}
+							//else if not mate
+							else {
+								System.out.print(ReturnPlay.Message.CHECK);
+								piecesList.add(tempPiece); //test if not in Check
+								if (blackKing.isInCheck() == false) { //check if current move can free king
+									continue;
+								}
+								else { //deny current move
+									piecesList.remove(piecesList.size()-1); //remove tempPiece we just added
+									temp.piecesOnBoard = piecesList;
+									System.out.print(ReturnPlay.Message.ILLEGAL_MOVE); 
+									return temp;
+								}
+							}		
+						}
+					}
+					/**inCheck**/
 					
 					piecesList.remove(i);
 					piecesList.add(tempPiece);
