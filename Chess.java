@@ -60,7 +60,6 @@ public class Chess {
 		
 		/* FILL IN THIS METHOD */
 		if (move == "resign") return null; //resign, need revise here, what to return?
-		if (move == "quit") return null; //needs to be revised too
 		
 		ReturnPlay temp = new ReturnPlay();
 		ReturnPiece tempPiece = new ReturnPiece();
@@ -78,15 +77,6 @@ public class Chess {
 		if (currPlayer == Chess.Player.white) playerIsWhite = 1; //if curr player is white
 		else playerIsWhite = 0; //if black
 		
-		for (int i = 0; i < piecesList.size(); i++) { //find kings
-			ReturnPiece currReturnPiece = piecesList.get(i);
-			if (currReturnPiece.pieceType == ReturnPiece.PieceType.BK) { //if BK
-				blackKing = new King (currReturnPiece, move, piecesList);
-			}
-			else if (currReturnPiece.pieceType == ReturnPiece.PieceType.WK) { //if WK
-				whiteKing = new King (currReturnPiece, move, piecesList);
-			}
-		}
 		boolean spaceCheck = false;
 		for (int i = 0; i < piecesList.size(); i++) { //find piece
 			ReturnPiece currReturnPiece = piecesList.get(i);
@@ -197,6 +187,15 @@ public class Chess {
 					
 					//** TO BE IMPLEMENTED isCheck
 						//return ILLEGAL_MOVE if king is in check
+					for (int i = 0; i < piecesList.size(); i++) { //find kings
+						ReturnPiece currReturnPiece = piecesList.get(i);
+						if (currReturnPiece.pieceType == ReturnPiece.PieceType.BK) { //if BK
+							blackKing = new King (currReturnPiece, move, piecesList);
+						}
+						else if (currReturnPiece.pieceType == ReturnPiece.PieceType.WK) { //if WK
+							whiteKing = new King (currReturnPiece, move, piecesList);
+						}
+					}
 					
 					piecesList.remove(i);
 					piecesList.add(tempPiece);
