@@ -46,7 +46,7 @@ public class Pawn extends Piece {
 			}
 			//black
 			else if (isWhite == 0) {
-				if (currRank == 2 && tarRank == currRank + 2) {
+				if (currRank == 2 && tarRank == currRank - 2) {
 					ReturnPiece checkingPiece = null;
 					for (int i = 0; i < piecesList.size(); i++) {
 						checkingPiece = piecesList.get(i);
