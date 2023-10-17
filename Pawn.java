@@ -29,17 +29,20 @@ public class Pawn extends Piece {
 			//white
 			if (isWhite == 1) {
 				if (currRank == 2 && tarRank == currRank + 2) { //first move: can move 2
+					ReturnPiece checkingPiece;
 					for (int i = 0; i < piecesList.size(); i++) {
-						ReturnPiece checkingPiece = piecesList.get(i);
+						checkingPiece = piecesList.get(i);
 						int checkingFile = checkingPiece.toString().charAt(0) - '`';
 						int checkingRank = checkingPiece.toString().charAt(1) - '0';
-						if (checkingFile == currFile && checkingRank == currRank + 1) {
-							if (!Objects.isNull(tarPiece)) return false;
+						if (checkingFile == currFile && checkingRank == currRank + 1)
+							break;	
+					}
+							if (!Objects.isNull(checkingPiece))
+								return false;
 							else {
 								hasMovedTwo = true;
 								return true;
 							}
-						}
 					}
 				}
 				else if (tarRank == currRank + 1) { //regular rule
@@ -50,25 +53,26 @@ public class Pawn extends Piece {
 			//black
 			else if (isWhite == 0) {
 				if (currRank == 7 && tarRank == currRank - 2) {
+					ReturnPiece checkingPiece;
 					for (int i = 0; i < piecesList.size(); i++) {
-						ReturnPiece checkingPiece = piecesList.get(i);
+						checkingPiece = piecesList.get(i);
 						int checkingFile = checkingPiece.toString().charAt(0) - '`';
 						int checkingRank = checkingPiece.toString().charAt(1) - '0';
-						if (checkingFile == currFile && checkingRank == currRank - 1) {
-							if (!Objects.isNull(tarPiece)) return false;
+						if (checkingFile == currFile && checkingRank == currRank + 1)
+							break;	
+					}
+							if (!Objects.isNull(checkingPiece))
+								return false;
 							else {
 								hasMovedTwo = true;
 								return true;
 							}
-						}
 					}
-				}
 				else if (tarRank == currRank - 1) {
 					hasMovedTwo = false;
 					return true;
 				}
 			}
-		}
 		return false; //capturedPiece == null in this case
 	}
 	
