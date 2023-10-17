@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 class ReturnPiece {
 	static enum PieceType {WP, WR, WN, WB, WQ, WK, 
@@ -90,7 +91,7 @@ public class Chess {
 			ReturnPiece currReturnPiece = piecesList.get(i);
 			
 			if (currReturnPiece.pieceFile.toString().charAt(0) == move.charAt(0) && //column
-				currReturnPiece.pieceRank == move.charAt(1) - '0') { // row //find the piece
+				currReturnPiece.pieceRank == move.charAt(1) - '0') { //row //find the piece
 				spaceCheck = true;
 					/**create chess type**/
 					if (currReturnPiece.pieceType == ReturnPiece.PieceType.BK ||
@@ -174,18 +175,44 @@ public class Chess {
 					}
 					
 					//enPassant check
+					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WP || 
+					thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BP) {
+						if (thisPiece.isEnPassant() && !Objects.isNull(lastPiece) && 
+						lastPiece.currPiece.equals(thisPiece.capturedPiece)) {
+						//if the last piece moved is the same as the piece now being captured; ignore warning
+							for (int e = 0; e < piecesList.size(); e++) {
+								if (piecesList.get(e).equals(lastPiece)) {
+									piecesList.remove(e); //removes enPassant'd piece
+									break;
+								}
+							}
+						}
+					}
 					
 					/**move**/
 					tempPiece.pieceType = currReturnPiece.pieceType; 
 					tempPiece.pieceFile = findFile(move.charAt(3));
 					tempPiece.pieceRank = move.charAt(4) - '0';
-					//if type == Rook: isRookFirstMove == false for that Rook
-					//isCheck
 					
+					//** TO BE IMPLEMENTED isCheck
+						//return ILLEGAL_MOVE if king is in check
 					
 					piecesList.remove(i);
 					piecesList.add(tempPiece);
 					/**move**/
+					
+					//if type == Rook: isRookFirstMove == false for that Rook
+					if (thisPiece.currPiece.pieceType == ReturnPiece.PieceType.WR || 
+							thisPiece.currPiece.pieceType == ReturnPiece.PieceType.BR) {
+						if (thisPiece.currFile == 1 && thisPiece.currRank == 1) //SW
+							isRookFirstMove[0] = false;
+						else if (thisPiece.currFile == 8 && thisPiece.currRank == 1) //SE
+							isRookFirstMove[1] = false;
+						else if (thisPiece.currFile == 1 && thisPiece.currRank == 8) //NW
+							isRookFirstMove[2] = false;
+						else if (thisPiece.currFile == 8 && thisPiece.currRank == 8) //NE
+							isRookFirstMove[3] = false;
+					}
 				
 					/*if (currReturnPiece.pieceType.toString() == "WK"|| currReturnPiece.pieceType.toString() == "BK") { //check castling
 						King tempKing = new King(currReturnPiece, move, piecesList);
@@ -198,11 +225,11 @@ public class Chess {
 						}
 					} */
 					
-					
 					//update lastPiece storing most recent move
 					lastPiece = thisPiece;
 					
 					/**capture**/
+					//(non-Pawn)
 					for (int j = 0; j < piecesList.size(); j++) {
 						if (piecesList.get(i) == currReturnPiece) {
 							//same chess as the current one skips
